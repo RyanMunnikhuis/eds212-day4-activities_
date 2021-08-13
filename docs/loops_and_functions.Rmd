@@ -1,0 +1,102 @@
+---
+title: "loops and functions"
+author: "Ryan Munnikhuis"
+date: "8/12/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+```{r}
+days_week = c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
+transect = c("Transect A", "Transect B", "Transect C")
+
+matrix_week = matrix(ncol = length(transect), nrow = length(days_week))
+
+for (i in seq_along(days_week)) {
+  for (j in seq_along(transect)) {
+    matrix_eph = print(paste(days_week[i], "-", transect[j]))
+  matrix_week[i, j] = matrix_eph
+    }
+}
+```
+
+
+```{r}
+force_func = function(m, a) {
+  force = m * a
+  print(paste("The resulting force is", force, "Newtons"))
+}
+  
+  force_func(m = 10, a = 12)
+  
+  
+  
+
+
+```
+```{r}
+name_column = function(df, column) {
+  if (column < 1) {  
+      error("Data frame cannot be less than one")
+    } else if (column > ncol(df)) {
+      error("value exceeds dataframe limit") }
+        else (names(df[column])) 
+}
+name_column(df = mtcars, column = 2)
+
+
+```
+
+```{r}
+fish_parm = data.frame(sci_name = c("Chanos chanos", "Sphyraena barracuda", "Caranx ignobilis"), 
+                     common_name = c("Milkfish", "Great barracuda", "Giant trevally"),
+                     a_est = c(0.0905, 0.0181, 0.0353), 
+                     b_est = c(2.52, 3.27, 3.05))
+
+fishmass = function(fish_name, total_length) {
+  fish_weight = dplyr::filter(fish_parm, common_name == fish_name)
+weight = fish_weight$a_est * (total_length ^ fish_weight$b_est)
+  return(weight)
+}
+
+fishmass("Milkfish", 11)
+
+fish_seq = seq(from = 0, to = 100, by = 1)
+
+Milkfish_weights = fishmass("Milkfish", fish_seq)
+
+Milkfish_weights
+```
+```{r}
+wave_seq = seq(from = 0, to = 3, by = 0.2)
+
+wave_power = function(h, time) {
+  deep = (0.5 * (h ^ 2) * time) 
+  return(deep)
+  }
+
+wave_power_3 = wave_power(h = wave_seq, time = 8)
+
+wave_power_3
+```
+```{r}
+wave_power_shallow = function(h, time, depth) {
+  if(depth < 12) {
+  shallow = (0.81 * (h ^ 2) * time)
+     message("shallow wave")  }
+  
+  else if (depth >= 12) {
+    shallow = (0.5 * (h ^ 2) * time)
+        message("deep wave")
+         }
+  
+  return(shallow)
+}
+
+wave_power_shallow(h = 12, time = 2, depth = 4)
+```
+
